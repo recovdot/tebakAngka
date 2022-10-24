@@ -72,8 +72,10 @@ def game():
     window = sg.Window('Tebak Angka', layout, icon=r'img/ico.ico')
     while True:
         event, values = window.read()
-        if event == "Exit" or event == sg.WIN_CLOSED:
+        if event == "Cancel" or event == sg.WIN_CLOSED:
             break
+        if event == "Ok":
+            hasil()
 
     window.close()
 
