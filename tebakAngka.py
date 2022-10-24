@@ -29,7 +29,10 @@ home_window = sg.Window("Tebak Angka - Layar Beranda", layout=home_layout, icon=
 # Event Loop to process "events" and get the "values" of the inputs
 
 def open_window_true():
-    layout = [[sg.Text("Benar", key="new"), sg.Image('img/true.png'),sg.Button('Exit')]]
+    layout = [ [sg.Column([[sg.Text("Benar", key="new", font=mFont)]], justification='center')],
+             [sg.Image('img/true.png')],
+             [sg.Column([[sg.Button('Exit')]], justification='center')]
+            ]
     window = sg.Window("Tebak Angka", layout, modal=True, icon=r"img/ico.ico")
     # choice = None
     while True:
@@ -40,7 +43,10 @@ def open_window_true():
     window.close()
 
 def open_window_false():
-    layout = [[sg.Text("Salah", key="new"), sg.Image('img/test.png'), sg.Button('Exit')]]
+    layout = [[sg.Column([[sg.Text("Salah", key="new", font=mFont)]], justification='center')],
+              [sg.Image('img/false.png')],
+              [sg.Column([[sg.Button('Exit')]], justification='center')]
+              ]
     window = sg.Window("Tebak Angka", layout, modal=True, icon=r"img/ico.ico")
     choice = None
     while True:
@@ -68,7 +74,7 @@ def hasil():
 def game():
     global event, values
     layout = [  [sg.Text('Masukan Angka', font="Poppins"), sg.InputText()],
-                     [sg.Button('Ok', key="Ok"), sg.Button('Cancel')]]
+                     [sg.Button('Ok', key="Ok", font=mFont), sg.Button('Cancel', font=mFont)]]
     window = sg.Window('Tebak Angka', layout, icon=r'img/ico.ico')
     while True:
         event, values = window.read()
