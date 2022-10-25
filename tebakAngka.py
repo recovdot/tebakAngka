@@ -1,5 +1,9 @@
 import PySimpleGUI as sg
 import random
+import os
+import pygame
+from pygame.locals import *
+from pygame import mixer
 
 # Var System
 angka = random.randint(0, 5)
@@ -27,12 +31,21 @@ home_layout = [ [sg.Column([[sg.Text('Selamat Datang, dan Selamat Bermain :D', f
 home_window = sg.Window("Tebak Angka - Layar Beranda", layout=home_layout, icon=r'img/ico.ico', resizable=True)
 # game_window = sg.Window('Tebak Angka', layout=game_layout, icon=r'img/ico.ico')
 # Event Loop to process "events" and get the "values" of the inputs
+file = 'bgm/Spanish Flea.mp3'
+# os.system('mpg123' + file)
+
+mixer.init()
+mixer.music.load('bgm/Spanish Flea.mp3')
+mixer.music.play()
 
 def open_window_true():
+    mixer.init()
+    mixer.music.load('bgm/correct.wav')
+    mixer.music.play()
     layout = [ [sg.Column([[sg.Text("Benar", key="new", font=mFont)]], justification='center')],
-             [sg.Image('img/true.png')],
-             [sg.Column([[sg.Button('Exit')]], justification='center')]
-            ]
+              [sg.Image('img/true.png')],
+              [sg.Column([[sg.Button('Exit')]], justification='center')]
+             ]
     window = sg.Window("Tebak Angka", layout, modal=True, icon=r"img/ico.ico")
     # choice = None
     while True:
@@ -43,6 +56,9 @@ def open_window_true():
     window.close()
 
 def open_window_false():
+    mixer.init()
+    mixer.music.load('bgm/wrong.wav')
+    mixer.music.play()
     layout = [[sg.Column([[sg.Text("Salah", key="new", font=mFont)]], justification='center')],
               [sg.Image('img/false.png')],
               [sg.Column([[sg.Button('Exit')]], justification='center')]
@@ -59,12 +75,9 @@ def open_window_false():
 def hasil():
     global inp
     global angka
-    # while int(values[0]) != angka:
-        # inp = input("Masukan Angka: ")
-        # inpA = int(inp)
+
     if(int(values[0]) == angka):
         open_window_true()
-            # break
     else:
         if(int(values[0]) > angka):
             open_window_false()
@@ -85,6 +98,25 @@ def game():
 
     window.close()
 
+def about():
+    global event, values
+    layout = [ [sg.Text('Ini adalah about')],
+             ]
+    window = sg.Window('Tebak Angka - About', layout, icon=mIcon)
+    while True:
+        event, values = window.read()
+        if event == "Cancel" or event == sg.WIN_CLOSED:
+            break
+
+    window.close()
+
+def help():
+    layout = [
+             [sg.Text('Jadi cara mainnya tu Gini, nantinya begitu', font=mFont)]
+             ]
+    window = sg.Window('Tebak Angka - Help', layout, icon=mIcon)
+    window.close()
+
 while True:
     event, values = home_window.read()
 
@@ -94,16 +126,7 @@ while True:
         hasil()
     if event == 'Play':
         game()
-        # open_window_true()
-        print(event)
-        print(values[0])
-        # if(values[0] == angka):
-            # open_window_true()
-        # else:
-            # window()
-        # popup()
-        # open_window()
-        # hasil()
-    # print('You entered ', values[0])
+    if event == 'About':
+        about()
 
 home_window.close()
